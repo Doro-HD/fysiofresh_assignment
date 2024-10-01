@@ -1,16 +1,18 @@
 <script setup lang="ts">
+import TaskColumn from './TaskColumn.vue';
+
 </script>
 
 <template>
     <v-container>
         <v-row>
-           <CardColumn title="Backlog"></CardColumn>
+           <TaskColumn title="Backlog"></TaskColumn>
 
-           <CardColumn title="Doing"></CardColumn>
+           <TaskColumn title="Doing"></TaskColumn>
 
-           <CardColumn title="Review"></CardColumn>
+           <TaskColumn title="Review"></TaskColumn>
 
-           <CardColumn title="Done"></CardColumn>
+           <TaskColumn title="Done"></TaskColumn>
         </v-row>
     </v-container>
 </template>

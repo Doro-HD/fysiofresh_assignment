@@ -7,8 +7,11 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    Kanban: typeof import('./src/components/Kanban.vue')['default']
     Card: typeof import('./src/components/Card.vue')['default']
     CardColumn: typeof import('./src/components/CardColumn.vue')['default']
+    Kanban: typeof import('./src/components/Kanban.vue')['default']
+    Task: typeof import('./src/components/Task.vue')['default']
+    TaskColumn: typeof import('./src/components/TaskColumn.vue')['default']
+    TaskForm: typeof import('./src/components/TaskForm.vue')['default']
   }
 }
