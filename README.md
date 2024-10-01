@@ -3,8 +3,17 @@ This project is for the fysiofresh internship assigment and should not be used o
 
 ## start application
 
-``npm run dev``
+```shell
+npm run dev
+```
 
+```shell
+yarn dev
+```
+
+```shell
+pnpm dev
+```
 ## The assignment
 - Sæt et Vue projekt op i Github
 - Lav et Vue component med følgende funktionalitet:
