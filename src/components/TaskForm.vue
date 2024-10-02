@@ -1,15 +1,16 @@
 <script setup lang="ts">
     import { ref, Ref } from 'vue';
 
-    const { initTitle = '', initDescription = '', cardTitle, resetFields } = defineProps<{
+    const { initTitle = '', initDescription = '', cardTitle, resetFields, isLoading } = defineProps<{
         initTitle?: string;
         initDescription?: string;
         cardTitle: string
         resetFields: boolean;
+        isLoading: boolean
     }>();
 
     const emit = defineEmits<{
-        (event: 'submit', id: string, title: string, description: string): void
+        (event: 'submit', id: string, title: string, description: string, isDialogActive: Ref<boolean, boolean>): void
     }>();
 
     const title = ref(initTitle);
@@ -17,14 +18,12 @@
 
     function submit(isDialogActive: Ref<boolean, boolean>) {
         const id = crypto.randomUUID();
-        emit('submit', id, title.value, description.value);
+        emit('submit', id, title.value, description.value, isDialogActive);
 
         if (resetFields) {
             title.value = '';
             description.value = '';
         }
-
-        isDialogActive.value = false;
     }
 </script>
 
@@ -35,7 +34,7 @@
         </template>
 
         <template v-slot:default="{ isActive }">
-            <v-card>
+            <v-card :loading="isLoading">
                 <v-card-title>{{ cardTitle }}</v-card-title>
 
                 <v-card-item>
