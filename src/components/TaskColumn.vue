@@ -15,22 +15,41 @@
     function addTask(id: string, title: string, description: string) {
         tasks.value.push({ id, title, description });
     }
+
+    function removeTask(taskId: string) {
+        tasks.value = tasks.value.filter(task => task.id !== taskId);
+    }
 </script>
 
 <template>
-    <v-col class="bg-primary">
-        <h4 class="text-center">{{ props.title }}</h4>
-
-        <draggable v-model="tasks" group="tasks" item-key="id">
+    <v-col>
+        <h4 class="text-center mb-2">{{ props.title }}</h4>
+                
+        <draggable class="h-100 bg-primary-darken-1" v-model="tasks" group="tasks" item-key="id">
             <template #header>
-                <TaskForm @submit="addTask"></TaskForm>
+                <div class="mb-2">
+                    <TaskForm card-title="Add task" :reset-fields="true" @submit="addTask" v-slot:default="slotProps">
+                        <v-btn
+                            v-bind="slotProps.activationProps"
+                            block
+                            color="secondary"
+                            prepend-icon="mdi-plus"
+                        >Add</v-btn>
+                    </TaskForm>
+                </div>
             </template>
 
-            <template #item="{ element: card }">
-                <Task class="mb-2" :title="card.title" :description="card.description"></Task>
+            <template #item="{ element: task }">
+                <Task
+                    class="mb-2"
+                    :id="task.id"
+                    :title="task.title"
+                    :description="task.description"
+                    @delete="removeTask"
+                >
+                </Task>
             </template>
         </draggable>
-
     </v-col>
 </template>
 

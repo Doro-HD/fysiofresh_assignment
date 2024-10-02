@@ -1,50 +1,54 @@
 <script setup lang="ts">
     import { ref, Ref } from 'vue';
 
+    const { initTitle = '', initDescription = '', cardTitle, resetFields } = defineProps<{
+        initTitle?: string;
+        initDescription?: string;
+        cardTitle: string
+        resetFields: boolean;
+    }>();
+
     const emit = defineEmits<{
         (event: 'submit', id: string, title: string, description: string): void
     }>();
 
-    let title = ref('');
-    let description = ref('');
+    const title = ref(initTitle);
+    const description = ref(initDescription);
 
     function submit(isDialogActive: Ref<boolean, boolean>) {
         const id = crypto.randomUUID();
         emit('submit', id, title.value, description.value);
 
-        title.value = '';
-        description.value = '';
+        if (resetFields) {
+            title.value = '';
+            description.value = '';
+        }
 
         isDialogActive.value = false;
     }
 </script>
 
 <template>
-    <v-dialog>
+    <v-dialog persistent max-width="500">
         <template v-slot:activator="{ props: activatorProps }">
-            <v-btn
-                v-bind="activatorProps"
-                block
-                color="secondary"
-                prepend-icon="mdi-plus"
-            >Add</v-btn>
+            <slot :activationProps="activatorProps"></slot>
         </template>
 
         <template v-slot:default="{ isActive }">
             <v-card>
-                <v-card-title>Add Card</v-card-title>
+                <v-card-title>{{ cardTitle }}</v-card-title>
 
                 <v-card-item>
-                    <v-form @submit.prevent @submit="submit(isActive)">
+                    <v-form id="task-form" @submit.prevent="submit(isActive)">
                         <v-text-field v-model="title" label="Task title"></v-text-field>
-                        <v-text-field v-model="description" label="Task description"></v-text-field>
+                        <v-textarea v-model="description" label="Task description"></v-textarea>
 
-                        <v-btn type="submit" color="success">Add</v-btn>
                     </v-form>
                 </v-card-item>
 
                 <v-card-actions>
-                    <v-btn color="error" @click="isActive.value = false">Close</v-btn>
+                    <v-btn form="task-form" type="submit" color="success">Save</v-btn>
+                    <v-btn color="error" @click="isActive.value = false">cancel</v-btn>
                 </v-card-actions>
             </v-card>
         </template>
