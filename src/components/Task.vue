@@ -11,7 +11,6 @@
     }>();
 
     const emit = defineEmits<{
-        (event: 'edit', id: string, newTitle: string, newDescription: string, onSuccess: () => void): void;
         (event: 'delete', id: string, isLoading: Ref<boolean, boolean>): void;
     }>();
 
