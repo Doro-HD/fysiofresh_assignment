@@ -39,7 +39,7 @@ function fetchTasks() {
     <v-container class="kanban bg-surface">
         <v-skeleton-loader color="primary" type="table-row" :loading="loadingTasks">
             <v-row>
-                <TaskColumn v-for="column in columnStore.columns" :key="column.id" :id="column.id" :name="column.name" :tasks="column.tasks"></TaskColumn>
+                <task-column v-for="column in columnStore.columns" :key="column.id" :id="column.id" :name="column.name" :tasks="column.tasks"></task-column>
             </v-row>
         </v-skeleton-loader>
     </v-container>

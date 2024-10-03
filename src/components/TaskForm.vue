@@ -17,7 +17,6 @@
         isLoading.value = true;
 
         await onSubmit(title.value, description.value);
-        console.log('hello from form')
 
         if (resetFields) {
             title.value = '';
@@ -41,14 +40,14 @@
 
                 <v-card-item>
                     <v-form id="task-form" @submit.prevent="submit(isActive)">
-                        <v-text-field v-model="title" label="Task title"></v-text-field>
-                        <v-textarea v-model="description" label="Task description"></v-textarea>
+                        <v-text-field data-test-task-form="title" v-model="title" label="Task title"></v-text-field>
 
+                        <v-textarea data-test-task-form="description" v-model="description" label="Task description"></v-textarea>
                     </v-form>
                 </v-card-item>
 
                 <v-card-actions>
-                    <v-btn form="task-form" type="submit" color="success" :disabled="isLoading">Save</v-btn>
+                    <v-btn data-test-task-form="edit" form="task-form" type="submit" color="success" :disabled="isLoading">Save</v-btn>
                     <v-btn color="error" @click="isActive.value = false" :disabled="isLoading">cancel</v-btn>
                 </v-card-actions>
             </v-card>

@@ -66,19 +66,19 @@
         <draggable class="h-100 bg-primary-darken-1" v-model="tasks" group="tasks" item-key="id">
             <template #header>
                 <div class="mb-2">
-                    <TaskForm card-title="Add task" :reset-fields="true" @submit="addTask" v-slot:default="slotProps" :on-submit="addTask">
+                    <task-form card-title="Add task" :reset-fields="true" @submit="addTask" v-slot:default="slotProps" :on-submit="addTask">
                         <v-btn
                             v-bind="slotProps.activationProps"
                             block
                             color="secondary"
                             prepend-icon="mdi-plus"
                         >Add</v-btn>
-                    </TaskForm>
+                    </task-form>
                 </div>
             </template>
 
             <template #item="{ element: task }">
-                <Task
+                <task
                     class="mb-2"
                     :id="task.id"
                     :title="task.title"
@@ -86,7 +86,7 @@
                     :on-edit="editTask"
                     @delete="removeTask"
                 >
-                </Task>
+                </task>
             </template>
         </draggable>
     </v-col>
