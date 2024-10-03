@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import TaskColumn from './TaskColumn.vue';
-import { Task } from '@/types/kanban';
-import { taskStore } from '@/state/tasks';
+import { Column, Task } from '@/types/kanban';
+import { columnStore } from '@/state/tasks';
 
 const loadingTasks = ref(true);
 
@@ -12,13 +12,18 @@ const simulator = setTimeout(fetchTasks, 3000);
 function fetchTasks() {
     try {
         // do fetch call
-        const serverTasks: Task[] = [
-            { id: crypto.randomUUID(), title: 'Allow for user generated columns', description: 'Let the user create their own columns', status: 'backlog' },
-            { id: crypto.randomUUID(), title: 'Testing', description: 'Create tests using vitest', status: 'backlog' },
-            { id: crypto.randomUUID(), title: 'Allow for deleting and editing of the tasks', description: 'Let the user delete and edit task at their own leisure', status: 'done' },
-            { id: crypto.randomUUID(), title: 'Create Kanban board', description: 'Make a kanban board with draggable card components, each card should have a title and description', status: 'done' }
+        const serverData: Column[] = [
+            { id: crypto.randomUUID(), name:'Backlog', order: 0, tasks: [
+                { id: crypto.randomUUID(), title: 'Add tests', description: 'using vitest, add tests to the project' },
+                { id: crypto.randomUUID(), title: 'User generated columns', description: 'Allow for the user to create their own columns' }
+            ]},
+            { id: crypto.randomUUID(), name: 'Doing', order: 1, tasks: [] },
+            { id: crypto.randomUUID(), name: 'Review', order: 2, tasks: [] },
+            { id: crypto.randomUUID(), name: 'Done', order: 3, tasks: [
+                { id: crypto.randomUUID(), title: 'Kanban board', description: 'Create a functional Kanban board with draggable card components' },
+            ] },
         ];
-        taskStore.addBulk(serverTasks);
+        columnStore.addColumnBulk(serverData);
 
         loadingTasks.value = false;
     } catch (err) {
@@ -34,13 +39,7 @@ function fetchTasks() {
     <v-container class="kanban bg-surface">
         <v-skeleton-loader color="primary" type="table-row" :loading="loadingTasks">
             <v-row>
-                <TaskColumn title="Backlog" column-status="backlog"></TaskColumn>
-
-                <TaskColumn title="Doing" column-status="doing"></TaskColumn>
-
-                <TaskColumn title="Review" column-status="review"></TaskColumn>
-
-                <TaskColumn title="Done" column-status="done"></TaskColumn>
+                <TaskColumn v-for="column in columnStore.columns" :key="column.id" :id="column.id" :name="column.name" :tasks="column.tasks"></TaskColumn>
             </v-row>
         </v-skeleton-loader>
     </v-container>

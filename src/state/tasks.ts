@@ -1,37 +1,40 @@
-import { Task, TaskStatus } from '@/types/kanban'
+import { Column, Task } from '@/types/kanban'
 import { reactive } from 'vue'
 
-export const taskStore = reactive<{
-    tasks: Task[],
-    filterByStatus: (taskStatus: TaskStatus) => Task[],
-    add: (task: Task) => void;
-    addBulk: (tasks: Task[]) => void;
-    changeStatus: (taskId: string, newStatus: TaskStatus) => void;
-    remove: (taskid: string) => void;
+export const columnStore = reactive<{
+    columns: Column[],
+    addColumn: (column: Column) => void;
+    addColumnBulk: (columns: Column[]) => void;
+    updateColumnTasks: (columnId: string, updatedTasks: Task[]) => void;
 }>({
-    tasks: [],
-    filterByStatus(taskStatus) {
-        return this.tasks.filter(task => taskStatus === task.status)
+    columns: [],
+    addColumn(column) {
+        this.columns.push(column)
     },
-    add(task) {
-        this.tasks.push(task);
-    },
-    addBulk(tasks) {
-        for (const task of tasks) {
-            this.add(task);
+    addColumnBulk(columns) {
+        for (const column of columns) {
+            this.addColumn(column)
         }
     },
-    changeStatus(taskId, newStatus) {
-        const taskIndex = this.tasks.findIndex(task => task.id === taskId);
-
-        if (taskIndex > -1) {
-            const [task] = this.tasks.splice(taskIndex, 1);
-            task.status = newStatus;
-
-            this.tasks.push(task);
+    updateColumnTasks(columnId, updatedTasks) {
+        const columnIndex = this.columns.findIndex(column => column.id === columnId);
+        if (columnIndex < 0) {
+            return;
         }
-    },
-    remove(taskId) {
-        this.tasks = this.tasks.filter(task => task.id === taskId);
+
+        const [column] = this.columns.splice(columnIndex, 1);
+
+        this.columns.push({ ...column, tasks: updatedTasks });
+        this.columns.sort((column1, column2) => {
+            if (column1.order < column2.order) {
+                return -1;
+            }
+
+            if (column1.order < column2.order) {
+                return 1;
+            }
+
+            return 0;
+        })
     }
 })

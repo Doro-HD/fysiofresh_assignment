@@ -8,9 +8,11 @@
         id: string;
         title: string;
         description: string;
+        onEdit: (taskId: string, newTitle: string, newDescription: string) => Promise<void>;
     }>();
 
     const emit = defineEmits<{
+        (event: 'edit', id: string, newTitle: string, newDescription: string, onSuccess: () => void): void;
         (event: 'delete', id: string, isLoading: Ref<boolean, boolean>): void;
     }>();
 
@@ -18,18 +20,12 @@
     const description = ref(props.description);
 
     const isLoading = ref(false);
-    const isFormLoading = ref(false);
 
-    async function editSelf(_id: string, newTitle: string, newDescription: string, isFormOpen: Ref<boolean, boolean>) {
-        isFormLoading.value = true;
+    async function editSelf(newTitle: string, newDescription: string) {
+        await props.onEdit(props.id, newTitle, newDescription);
 
-        await delay(() => {
-            title.value = newTitle;
-            description.value = newDescription;
-        }, 2);
-
-        isFormLoading.value = false;
-        isFormOpen .value = false;
+        title.value = newTitle;
+        description.value = newDescription;
     }
 
     function removeSelf() {
@@ -48,7 +44,7 @@
 
             <div class="mx-1"></div>
 
-            <TaskForm card-title="Edit task" :init-title="title" :init-description="description" :reset-fields="false" @submit="editSelf" v-slot:default="slotProps" :is-loading="isFormLoading">
+            <TaskForm card-title="Edit task" :init-title="title" :init-description="description" :reset-fields="false" v-slot:default="slotProps" :on-submit="editSelf">
                 <v-btn v-bind="slotProps.activationProps" icon="mdi-pencil" color="secondary" size="sm"></v-btn>
             </TaskForm>
         </template>

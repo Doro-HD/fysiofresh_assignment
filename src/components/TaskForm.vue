@@ -1,29 +1,31 @@
 <script setup lang="ts">
     import { ref, Ref } from 'vue';
 
-    const { initTitle = '', initDescription = '', cardTitle, resetFields, isLoading } = defineProps<{
+    const { initTitle = '', initDescription = '', cardTitle, resetFields, onSubmit } = defineProps<{
+        cardTitle: string;
         initTitle?: string;
         initDescription?: string;
-        cardTitle: string
         resetFields: boolean;
-        isLoading: boolean
-    }>();
-
-    const emit = defineEmits<{
-        (event: 'submit', id: string, title: string, description: string, isDialogActive: Ref<boolean, boolean>): void
+        onSubmit: (title: string, description: string) => Promise<void>;
     }>();
 
     const title = ref(initTitle);
     const description = ref(initDescription);
+    const isLoading = ref(false);
 
-    function submit(isDialogActive: Ref<boolean, boolean>) {
-        const id = crypto.randomUUID();
-        emit('submit', id, title.value, description.value, isDialogActive);
+    async function submit(isDialogActive: Ref<boolean, boolean>) {
+        isLoading.value = true;
+
+        await onSubmit(title.value, description.value);
+        console.log('hello from form')
 
         if (resetFields) {
             title.value = '';
             description.value = '';
         }
+
+        isLoading.value = false;
+        isDialogActive.value = false;
     }
 </script>
 
@@ -46,8 +48,8 @@
                 </v-card-item>
 
                 <v-card-actions>
-                    <v-btn form="task-form" type="submit" color="success">Save</v-btn>
-                    <v-btn color="error" @click="isActive.value = false">cancel</v-btn>
+                    <v-btn form="task-form" type="submit" color="success" :disabled="isLoading">Save</v-btn>
+                    <v-btn color="error" @click="isActive.value = false" :disabled="isLoading">cancel</v-btn>
                 </v-card-actions>
             </v-card>
         </template>
