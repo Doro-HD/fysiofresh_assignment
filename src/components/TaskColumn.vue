@@ -18,7 +18,6 @@
     const tasks = ref(props.tasks);
 
     watch(tasks, (newTasks, _oldTasks) => {
-        console.log('hello from watch')
         columnStore.updateColumnTasks(props.id, newTasks);
     }, { deep: true });
 

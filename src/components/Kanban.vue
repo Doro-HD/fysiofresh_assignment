@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import TaskColumn from './TaskColumn.vue';
-import { Column, Task } from '@/types/kanban';
+import { Column } from '@/types/kanban';
 import { columnStore } from '@/state/tasks';
 
 const loadingTasks = ref(true);
