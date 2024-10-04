@@ -38,7 +38,7 @@ function fetchTasks() {
 </script>
 
 <template>
-    <v-container class="kanban bg-surface">
+    <v-container class="kanban bg-primary">
         <v-skeleton-loader color="primary" type="table-row" :loading="loadingTasks">
             <v-row>
                 <task-column v-for="column in columnStore.columns" :key="column.id" :id="column.id" :name="column.name" :tasks="column.tasks"></task-column>
