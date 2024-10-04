@@ -9,7 +9,6 @@
     import TaskForm from './TaskForm.vue';
 
     const props = defineProps<{
-        // the task status that this column is associated with
         id: string;
         name: string;
         tasks: TaskType[];

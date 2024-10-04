@@ -14,12 +14,14 @@ function fetchTasks() {
         // do fetch call
         const serverData: Column[] = [
             { id: crypto.randomUUID(), name:'Backlog', order: 0, tasks: [
-                { id: crypto.randomUUID(), title: 'Add tests', description: 'using vitest, add tests to the project' },
                 { id: crypto.randomUUID(), title: 'User generated columns', description: 'Allow for the user to create their own columns' }
             ]},
-            { id: crypto.randomUUID(), name: 'Doing', order: 1, tasks: [] },
+            { id: crypto.randomUUID(), name: 'Doing', order: 1, tasks: [
+                { id: crypto.randomUUID(), title: 'Add tests', description: 'using vitest, add tests to the project' },
+            ] },
             { id: crypto.randomUUID(), name: 'Review', order: 2, tasks: [] },
             { id: crypto.randomUUID(), name: 'Done', order: 3, tasks: [
+                { id: crypto.randomUUID(), title: 'Simulate Server', description: 'Simulate server response time and use loading states to indicate it' },
                 { id: crypto.randomUUID(), title: 'Kanban board', description: 'Create a functional Kanban board with draggable card components' },
             ] },
         ];
